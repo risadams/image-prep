@@ -51,12 +51,13 @@ const menu = [
 
 function createAboutWindow() {
   aboutWindow = new BrowserWindow({
-    width: 320,
-    height: 320,
+    width: 420,
+    height: 340,
     title: 'About Image-Prep',
     icon: `${__dirname}/assets/icons/ris1.png`,
     resizable: false,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+
   });
 
   aboutWindow.loadURL(`file://${__dirname}/app/about.html`);
@@ -64,15 +65,24 @@ function createAboutWindow() {
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: isDev ? 1100 : 480,
+    height: 580,
     title: 'Image-Prep',
     icon: `${__dirname}/assets/icons/ris1.png`,
     resizable: isDev,
-    backgroundColor: '#ccc'
+    backgroundColor: '#ccc',
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
+
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
 }
 
 app.on('window-all-closed', () => {
