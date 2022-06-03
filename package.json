@@ -1,0 +1,23 @@
+{
+  "name": "@risadams/image-prep",
+  "version": "1.0.0",
+  "description": "## Contribute",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/risadams/image-prep.git"
+  },
+  "author": "Ris Adams",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/risadams/image-prep/issues"
+  },
+  "homepage": "https://github.com/risadams/image-prep#readme",
+  "devDependencies": {
+    "electron": "^19.0.3"
+  }
+}
