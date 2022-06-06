@@ -1,6 +1,24 @@
+const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
+
+const imageMin = require('imagemin');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminPngquant = require('imagemin-pngquant');
+const slash = require('slash');
+
+const {
+  app,
+  BrowserWindow,
+  Menu,
+  nativeImage,
+  ipcMain,
+  shell
+} = require('electron');
+
+
+/* ------------------------------------------------ */
+/* ------------------------------------------------ */
 
 /* Setting the environment variables. */
 process.env.NODE_ENV = 'development';
@@ -51,22 +69,64 @@ const menu = [
   ] : [])
 ];
 
+/* ------------------------------------------------ */
+/* ------------------------------------------------ */
+
 ipcMain.on('image:prep', (event, options) => {
   options.dest = options.dest || path.join(os.homedir(), 'image-prep');
+
+  if (fs.existsSync(options.dest)) {
+    fs.rmdirSync(options.dest, { recursive: true })
+  }
+  fs.mkdirSync(options.dest);
+
   prepImages(options);
 });
 
 async function prepImages({ imgPath, quality, dest }) {
-  console.log(imgPath, quality, dest);
+  const pngQuality = quality / 100;
+  const desiredWidths = [1400, 1057, 640, 320];
+  try {
+
+    // const files = await imageMin([slash(imgPath)], {
+    //   destination: dest,
+    //   plugins: [
+    //     imageminMozjpeg({ quality }),
+    //     imageminPngquant({ quality: [pngQuality, pngQuality] })
+    //   ]
+    // });
+
+    desiredWidths.forEach(async (w) => {
+      var file = slash(imgPath);
+      var name = path.basename(imgPath, path.extname(imgPath));
+      var newPath = slash(`${dest}/${name}@${w}w.jpg`);
+
+      console.log(`Resizing ${name}: ${w} => ${file}`);
+
+      var img = nativeImage.createFromPath(file);
+      resized = img.resize({ width: w, quality: 'best' });
+      console.log(`Writing ${newPath}`);
+      fs.writeFile(newPath, resized.toJPEG(parseInt(quality)), err => {
+        if (err) { console.error(err); }
+      });
+    });
+
+    shell.openPath(dest);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
+
+/* ------------------------------------------------ */
+/* ------------------------------------------------ */
 
 function createAboutWindow() {
   aboutWindow = new BrowserWindow({
     width: 420,
     height: 340,
     title: 'About Image-Prep',
-    icon: `${__dirname}/assets/icons/ris1.png`,
+    icon: `${__dirname} /assets/icons / ris1.png`,
     resizable: false,
     backgroundColor: 'white',
   });
