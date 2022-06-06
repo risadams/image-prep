@@ -7,8 +7,12 @@
     "build": "build-electron",
     "start": "electron .",
     "dev": "nodemon --exec electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/ris1.png --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=assets/icons/ris1.png --prune=false --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Image-Prep\"",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/icons/ris1.png --prune=false --out=release-builds"
   },
+  "productName": "image-prep",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/risadams/image-prep.git"
@@ -21,6 +25,7 @@
   "homepage": "https://github.com/risadams/image-prep#readme",
   "devDependencies": {
     "electron": "^19.0.3",
+    "electron-packager": "^15.5.1",
     "nodemon": "^2.0.16"
   },
   "dependencies": {

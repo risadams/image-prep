@@ -17,3 +17,9 @@ form.addEventListener('submit', (e) => {
 });
 
 document.getElementById('output-path').innerText = path.join(os.homedir(), 'image-prep');
+
+
+//on complete
+ipcRenderer.on('image:done', () => {
+  M.toast({ html: 'Done!' });
+});
