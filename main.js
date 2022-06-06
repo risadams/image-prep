@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 
 /* Setting the environment variables. */
 process.env.NODE_ENV = 'development';
@@ -48,6 +48,10 @@ const menu = [
     }
   ] : [])
 ];
+
+ipcMain.on('image:prep', (event, options) => {
+  console.log(options);
+});
 
 function createAboutWindow() {
   aboutWindow = new BrowserWindow({
