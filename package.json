@@ -24,10 +24,8 @@
     "nodemon": "^2.0.16"
   },
   "dependencies": {
-    "imagemin": "^7.0.1",
-    "imagemin-mozjpeg": "^8.0.0",
-    "imagemin-pngquant": "^8.0.0",
-    "slash": "^3.0.0"
+    "slash": "^3.0.0",
+    "webp-converter": "^2.3.3"
   },
   "engines": {
     "node": ">=16.0.0"

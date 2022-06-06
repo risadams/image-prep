@@ -2,10 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const imageMin = require('imagemin');
-const imageminMozjpeg = require('imagemin-mozjpeg');
-const imageminPngquant = require('imagemin-pngquant');
 const slash = require('slash');
+const webp = require('webp-converter');
 
 const {
   app,
@@ -15,6 +13,7 @@ const {
   ipcMain,
   shell
 } = require('electron');
+const { setTimeout } = require('timers/promises');
 
 
 /* ------------------------------------------------ */
@@ -84,31 +83,28 @@ ipcMain.on('image:prep', (event, options) => {
 });
 
 async function prepImages({ imgPath, quality, dest }) {
-  const pngQuality = quality / 100;
   const desiredWidths = [1400, 1057, 640, 320];
   try {
 
-    // const files = await imageMin([slash(imgPath)], {
-    //   destination: dest,
-    //   plugins: [
-    //     imageminMozjpeg({ quality }),
-    //     imageminPngquant({ quality: [pngQuality, pngQuality] })
-    //   ]
-    // });
-
-    desiredWidths.forEach(async (w) => {
+    desiredWidths.forEach((w) => {
       var file = slash(imgPath);
       var name = path.basename(imgPath, path.extname(imgPath));
-      var newPath = slash(`${dest}/${name}@${w}w.jpg`);
-
-      console.log(`Resizing ${name}: ${w} => ${file}`);
+      var jpgPath = slash(`${dest}/${name}@${w}w.jpg`);
 
       var img = nativeImage.createFromPath(file);
       resized = img.resize({ width: w, quality: 'best' });
-      console.log(`Writing ${newPath}`);
-      fs.writeFile(newPath, resized.toJPEG(parseInt(quality)), err => {
+      console.log(`Writing ${jpgPath}`);
+      fs.writeFile(jpgPath, resized.toJPEG(parseInt(quality)), err => {
         if (err) { console.error(err); }
       });
+    });
+
+    desiredWidths.forEach((w) => {
+      var name = path.basename(imgPath, path.extname(imgPath));
+      var jpgPath = slash(`${dest}/${name}@${w}w.jpg`);
+      var webpPath = slash(`${dest}/${name}@${w}w.webp`);
+
+      webp.cwebp(jpgPath, webpPath, `-q ${quality / 100},logging="-v"`);
     });
 
     shell.openPath(dest);
