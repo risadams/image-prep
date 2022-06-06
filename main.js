@@ -75,7 +75,7 @@ ipcMain.on('image:prep', (event, options) => {
   options.dest = options.dest || path.join(os.homedir(), 'image-prep');
 
   if (fs.existsSync(options.dest)) {
-    fs.rmdirSync(options.dest, { recursive: true })
+    fs.rm(options.dest, { recursive: true }, () => { });
   }
   fs.mkdirSync(options.dest);
 
