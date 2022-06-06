@@ -1,9 +1,10 @@
 {
   "name": "@risadams/image-prep",
   "version": "1.0.0",
-  "description": "## Contribute",
+  "description": "Given an image, create one ore more versions of it at the expected size and quality.",
   "main": "main.js",
   "scripts": {
+    "build": "build-electron",
     "start": "electron .",
     "dev": "nodemon --exec electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,5 +22,9 @@
   "devDependencies": {
     "electron": "^19.0.3",
     "nodemon": "^2.0.16"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

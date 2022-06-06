@@ -1,4 +1,6 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const path = require('path');
+const os = require('os');
+const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron');
 
 /* Setting the environment variables. */
 process.env.NODE_ENV = 'development';
@@ -50,8 +52,14 @@ const menu = [
 ];
 
 ipcMain.on('image:prep', (event, options) => {
-  console.log(options);
+  options.dest = options.dest || path.join(os.homedir(), 'image-prep');
+  prepImages(options);
 });
+
+async function prepImages({ imgPath, quality, dest }) {
+  console.log(imgPath, quality, dest);
+}
+
 
 function createAboutWindow() {
   aboutWindow = new BrowserWindow({
@@ -61,7 +69,6 @@ function createAboutWindow() {
     icon: `${__dirname}/assets/icons/ris1.png`,
     resizable: false,
     backgroundColor: 'white',
-
   });
 
   aboutWindow.loadURL(`file://${__dirname}/app/about.html`);
