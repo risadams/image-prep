@@ -29,7 +29,7 @@
     "nodemon": "^2.0.16"
   },
   "dependencies": {
-    "slash": "^3.0.0",
+    "slash": "^4.0.0",
     "webp-converter": "^2.3.3"
   },
   "engines": {
