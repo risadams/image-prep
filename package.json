@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/risadams/image-prep#readme",
   "devDependencies": {
-    "electron": "^29.1.3",
+    "electron": "^29.1.4",
     "electron-packager": "^17.1.2",
     "nodemon": "^3.1.0"
   },
